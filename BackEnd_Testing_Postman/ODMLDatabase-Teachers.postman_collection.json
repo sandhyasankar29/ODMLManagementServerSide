@@ -1,0 +1,422 @@
+{
+	"info": {
+		"_postman_id": "8f14ea04-60b3-4d0c-8ff3-a72a9c2b0a31",
+		"name": "ODMLDatabase-Teachers",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Teacher Login - Correct Credentials",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Validating Status Code\"]=responseCode.code == 200;\r",
+							"var response = JSON.parse(responseBody);\r",
+							"tests[\"status\"]= response.status == \"Success\";\r",
+							"tests[\"approval\"]= response.approval == \"APPROVED\";"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"tuserid\":\"10CSE765\",\r\n    \"password\":\"milkyWay\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/signinteacher",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"signinteacher"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Teacher Login - Incorrect Credentials",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Validating Status Code\"]=responseCode.code == 400;\r",
+							"var response = JSON.parse(responseBody);\r",
+							"tests[\"reason\"]= responseBody.has(\"reason\");\r",
+							"if(tests[\"reason\"]){\r",
+							"tests[\"status\"]= response.reason.has(\"Wrong\");\r",
+							"tests[\"approval\"]= response.approval == \"APPROVED\";}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"tuserid\":\"10CSE765\",\r\n    \"password\":\"milkyway\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/signinteacher",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"signinteacher"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register Teacher",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Validating Status Code\"]= responseCode.code == 200;\r",
+							"tests[\"Response Body\"]= responseBody.has(\"status\")\r",
+							"if(tests[\"Response Body\"])\r",
+							"{\r",
+							"    var response= JSON.parse(responseBody);\r",
+							"    tests[\"status\"]=response.status==(\"Successfully Registered\");\r",
+							"    tests[\"userId\"] = response.tuserid ==\r",
+							"        pm.collectionVariables.get(\"tuserid\");\r",
+							"    postman.setNextRequest(\"Delete Teacher Login\");\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"tuserid\":\"{{tuserid}}\",\r\n    \"lastname\":\"{{lastname}}\",\r\n    \"firstname\":\"{{firstname}}\",\r\n    \"doj\":\"{{doj}}\",\r\n    \"branch\":\"{{branch}}\",\r\n    \"email\":\"{{email}}\",\r\n    \"password\":\"{{password}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/registerteacher",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"registerteacher"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Teacher Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Validating Status Code\"]= responseCode.code == 200;\r",
+							"tests[\"Response Body\"]= responseBody.has(\"status\")\r",
+							"if(tests[\"Response Body\"])\r",
+							"{\r",
+							"    var response = JSON.parse(responseBody);\r",
+							"    tests[\"status\"]= response.status == \"Delete success\";\r",
+							"    postman.setNextRequest(\"Delete Teacher Details\");\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"tuserid\":\"{{tuserid}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/deleteteacherlogin",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"deleteteacherlogin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Teacher Details",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Validating Status Code\"]= responseCode.code == 200;\r",
+							"tests[\"Response Body\"]= responseBody.has(\"status\")\r",
+							"if(tests[\"Response Body\"])\r",
+							"{\r",
+							"    var response = JSON.parse(responseBody);\r",
+							"    tests[\"status\"]= response.status == \"Delete success\";\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"tuserid\":\"{{tuserid}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/deleteteacher",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"deleteteacher"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Leave Records",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Validating Status Code\"]=responseCode.code == 200;\r",
+							"var response=JSON.parse(responseBody);\r",
+							"tests[\"Validating Teacher Id\"]= response[0].tuserid == \"10CSE345\";\r",
+							"if(tests[\"Validating Teacher Id\"])\r",
+							"{\r",
+							"    tests[\"Student User Id\"]=responseBody.has(\"suserid\");\r",
+							"    tests[\"Start Date\"]=responseBody.has(\"dos\");\r",
+							"    tests[\"End Date\"]=responseBody.has(\"doe\");\r",
+							"    tests[\"Branch\"]=responseBody.has(\"branch\");\r",
+							"    tests[\"Approval\"]=responseBody.has(\"approval\");\r",
+							"    tests[\"Reason\"]=responseBody.has(\"reason\");\r",
+							"    tests[\"Certificate\"]=responseBody.has(\"cert\");\r",
+							"\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
+				"url": {
+					"raw": "{{url}}/teacherleaverecords/:troll",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"teacherleaverecords",
+						":troll"
+					],
+					"variable": [
+						{
+							"key": "troll",
+							"value": "10CSE345"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Chairperson Leave Records",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Validating Status Code\"]= responseCode.code == 200;\r",
+							"pm.test(\"response should be okay to process\", function () {\r",
+							"    pm.response.to.not.be.error;\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"pm.test(\"Results are Valid\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData[0].branch).to.eql('CSE');\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/chairleaverecords/:dept",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"chairleaverecords",
+						":dept"
+					],
+					"variable": [
+						{
+							"key": "dept",
+							"value": "CSE"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Teachers in CSE",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"response should be okay to process\", function () {\r",
+							"    pm.response.to.not.be.error;\r",
+							"    pm.response.to.be.json;\r",
+							"    pm.expect(pm.response.text()).to.include(\"tuserid\");\r",
+							"});\r",
+							"pm.test(\"Response time is less than 300ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(300);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/teachdept/:dept",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"teachdept",
+						":dept"
+					],
+					"variable": [
+						{
+							"key": "dept",
+							"value": "CSE"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": ""
+		},
+		{
+			"key": "tuserid",
+			"value": ""
+		},
+		{
+			"key": "lastname",
+			"value": ""
+		},
+		{
+			"key": "firstname",
+			"value": ""
+		},
+		{
+			"key": "doj",
+			"value": ""
+		},
+		{
+			"key": "branch",
+			"value": ""
+		},
+		{
+			"key": "email",
+			"value": ""
+		},
+		{
+			"key": "password",
+			"value": ""
+		}
+	]
+}

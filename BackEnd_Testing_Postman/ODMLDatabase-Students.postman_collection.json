@@ -1,0 +1,375 @@
+{
+	"info": {
+		"_postman_id": "567bd862-3600-4fda-a4ba-f55027e7bfea",
+		"name": "ODMLDatabase-Students",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "StudentLogin-Correct Username and Password",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Validating Status Code\"]=responseCode.code == 200;\r",
+							"var response = JSON.parse(responseBody);\r",
+							"tests[\"status\"]= response.status = \"Success\";"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"suserid\":\"CB.EN.U4CSE18456\",\r\n    \"password\":\"PETERPARKER\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/signinstudent",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"signinstudent"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "StudentLogin-Incorrect Credentials",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Validating Status Code\"]=responseCode.code == 400;\r",
+							"var response = JSON.parse(responseBody);\r",
+							"tests[\"status\"]= response.status == \"Fail\";"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"suserid\":\"CB.EN.U4CSE18363\",\r\n    \"password\":\"GALAXY\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/signinstudent",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"signinstudent"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "RegisterStudent",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Validating Status Code\"]=responseCode.code == 200;\r",
+							"response=JSON.parse(responseBody);\r",
+							"tests[\"OTP Generated\"]=responseBody.has(\"genOTP\");\r",
+							"value=response.genOTP;\r",
+							"console.log(value);\r",
+							"pm.collectionVariables.set(\"otp\", value);\r",
+							"postman.setNextRequest(\"Verify Student\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"suserid\":\"{{suserid}}\",\r\n    \"firstname\":\"{{firstname}}\",\r\n    \"email\":\"{{email}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/registerstudent",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"registerstudent"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Verify Student",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Validating Status Code\"]=responseCode.code == 200;\r",
+							"response=JSON.parse(responseBody);\r",
+							"tests[\"status\"]=responseBody.has(\"Successfully Registered\");\r",
+							"postman.setNextRequest(\"Test Login\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"suserid\":\"{{suserid}}\",\r\n    \"lastname\":\"{{lastname}}\",\r\n    \"firstname\":\"{{firstname}}\",\r\n    \"dob\":\"{{dob}}\",\r\n    \"roll\":\"{{roll}}\",\r\n    \"branch\":\"{{branch}}\",\r\n    \"section\":\"{{section}}\",\r\n    \"batch\":\"{{batch}}\",\r\n    \"email\":\"{{email}}\",\r\n    \"phnumber\":\"{{phnumber}}\",\r\n    \"password\":\"{{password}}\",\r\n    \"otp\":\"{{otp}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/verifystudent",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"verifystudent"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Test Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Validating Status Code\"]=responseCode.code == 200;\r",
+							"var response = JSON.parse(responseBody);\r",
+							"tests[\"status\"]= response.status = \"Success\";\r",
+							"postman.setNextRequest(\"Delete Student Details\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"suserid\":\"{{suserid}}\",\r\n    \"password\":\"{{password}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/signinstudent",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"signinstudent"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Student Details",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Validating Status Code\"]=responseCode.code == 200;\r",
+							"response=JSON.parse(responseBody);\r",
+							"tests[\"status\"]=responseBody.has(\"Delete success\");\r",
+							"postman.setNextRequest(\"Delete Student Login Details\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"suserid\":\"{{suserid}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/deletestudent",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"deletestudent"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Student Login Details",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Validating Status Code\"]=responseCode.code == 200;\r",
+							"response=JSON.parse(responseBody);\r",
+							"tests[\"status\"]=responseBody.has(\"Delete success\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"suserid\":\"{{suserid}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/deletestudentlogin",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"deletestudentlogin"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": ""
+		},
+		{
+			"key": "suserid",
+			"value": ""
+		},
+		{
+			"key": "lastname",
+			"value": ""
+		},
+		{
+			"key": "firstname",
+			"value": ""
+		},
+		{
+			"key": "dob",
+			"value": ""
+		},
+		{
+			"key": "roll",
+			"value": ""
+		},
+		{
+			"key": "branch",
+			"value": ""
+		},
+		{
+			"key": "section",
+			"value": ""
+		},
+		{
+			"key": "otp",
+			"value": ""
+		},
+		{
+			"key": "email",
+			"value": ""
+		},
+		{
+			"key": "batch",
+			"value": ""
+		},
+		{
+			"key": "phnumber",
+			"value": ""
+		},
+		{
+			"key": "password",
+			"value": ""
+		}
+	]
+}
