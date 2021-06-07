@@ -27,9 +27,9 @@ const accessToken = oauth2Client.getAccessToken();
 const db = knex({
     client: 'pg',
     connection: {
-        host: 'odmldatabase.postgres.database.azure.com',
-        user: 'sammy2310@odmldatabase',
-        password: 'Doomsday#23',
+        host: 'odml.postgres.database.azure.com',
+        user: 'shriharinithin@odml',
+        password: 'softwaregroup12@',
         database: 'odmlrecords',
         port: 5432,
         ssl: true
