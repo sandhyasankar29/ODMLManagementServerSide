@@ -82,7 +82,7 @@ app.post('/registerstudent', (req, res) => {
     const value = req.body;
     db('student_details').select('*').where('email', '=', value.email)
         .then(user => {
-            if (user) {
+            if (user>0) {
                 res.status(400).json({status:"Email Not Allowed", email:value.email , })
             }
             else {
