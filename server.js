@@ -15,15 +15,15 @@ const generateOTP = () => { otp = otpGenerator.generate(6, { upperCase: false, s
 generateOTP()
 const OAuth2 = google.auth.OAuth2;
 const oauth2Client = new OAuth2(
-    '419164085262-tsia15f1698ghin5d0du8svoaa83jfjo.apps.googleusercontent.com',
-    'JY342uAw-OCGBFB8Q8hJKvQ8', // Client Secret
+    '477003688637-lb429dqu7c6lpmrv649mvlslape1terq.apps.googleusercontent.com',
+    '8hZqjiJKCr7bS8ab4OJHNAj0', // Client Secret
     "https://developers.google.com/oauthplayground" // Redirect URL
 );
 oauth2Client.setCredentials({
     refresh_token: "1//04Kdd0-Hzo6b_CgYIARAAGAQSNwF-L9IrX5j_8cfhKEictp_hPXJuiPqceSJjkRt8mYxb2bwqPA4g91N_0L_i3DcbeFSKyVSaVaQ"
 });
 const accessToken = oauth2Client.getAccessToken();
-
+console.log(accessToken);
 const db = knex({
     client: 'pg',
     connection: {
@@ -90,13 +90,14 @@ app.post('/registerstudent', (req, res) => {
                     .where('suserid', '!=', value.suserid)
                     .then(data => {
                         const accessToken = oauth2Client.getAccessToken()
+                        console.log(accessToken);
                         const smtpTransport = nodemailer.createTransport({
                             service: "gmail",
                             auth: {
                                 type: "OAuth2",
                                 user: "odmldatabaseemailer@gmail.com",
-                                clientId: '419164085262-tsia15f1698ghin5d0du8svoaa83jfjo.apps.googleusercontent.com',
-                                clientSecret: 'JY342uAw-OCGBFB8Q8hJKvQ8',
+                                clientId: '477003688637-lb429dqu7c6lpmrv649mvlslape1terq.apps.googleusercontent.com',
+                                clientSecret: '8hZqjiJKCr7bS8ab4OJHNAj0',
                                 refreshToken: "1//04Kdd0-Hzo6b_CgYIARAAGAQSNwF-L9IrX5j_8cfhKEictp_hPXJuiPqceSJjkRt8mYxb2bwqPA4g91N_0L_i3DcbeFSKyVSaVaQ",
                                 accessToken: accessToken,
                                 tls: {
@@ -388,8 +389,8 @@ app.post('/changepassword', (req, res) => {
                     auth: {
                         type: "OAuth2",
                         user: "odmldatabaseemailer@gmail.com",
-                        clientId: '419164085262-tsia15f1698ghin5d0du8svoaa83jfjo.apps.googleusercontent.com',
-                        clientSecret: 'JY342uAw-OCGBFB8Q8hJKvQ8',
+                        clientId: '477003688637-lb429dqu7c6lpmrv649mvlslape1terq.apps.googleusercontent.com',
+                        clientSecret: '8hZqjiJKCr7bS8ab4OJHNAj0',
                         refreshToken: "1//04Kdd0-Hzo6b_CgYIARAAGAQSNwF-L9IrX5j_8cfhKEictp_hPXJuiPqceSJjkRt8mYxb2bwqPA4g91N_0L_i3DcbeFSKyVSaVaQ",
                         accessToken: accessToken,
                         tls: {
@@ -489,8 +490,8 @@ app.post('/decision', (req, res) => {
                         auth: {
                             type: "OAuth2",
                             user: "odmldatabaseemailer@gmail.com",
-                            clientId: '419164085262-tsia15f1698ghin5d0du8svoaa83jfjo.apps.googleusercontent.com',
-                            clientSecret: 'JY342uAw-OCGBFB8Q8hJKvQ8',
+                            clientId: '477003688637-lb429dqu7c6lpmrv649mvlslape1terq.apps.googleusercontent.com',
+                            clientSecret: '8hZqjiJKCr7bS8ab4OJHNAj0',
                             refreshToken: "1//04Kdd0-Hzo6b_CgYIARAAGAQSNwF-L9IrX5j_8cfhKEictp_hPXJuiPqceSJjkRt8mYxb2bwqPA4g91N_0L_i3DcbeFSKyVSaVaQ",
                             accessToken: accessToken,
                             tls: {
@@ -599,8 +600,8 @@ app.post('/requestpassword', (req, res) => {
                             auth: {
                                 type: "OAuth2",
                                 user: "odmldatabaseemailer@gmail.com",
-                                clientId: '419164085262-tsia15f1698ghin5d0du8svoaa83jfjo.apps.googleusercontent.com',
-                                clientSecret: 'JY342uAw-OCGBFB8Q8hJKvQ8',
+                                clientId: '477003688637-lb429dqu7c6lpmrv649mvlslape1terq.apps.googleusercontent.com',
+                                clientSecret: '8hZqjiJKCr7bS8ab4OJHNAj0',
                                 refreshToken: "1//04Kdd0-Hzo6b_CgYIARAAGAQSNwF-L9IrX5j_8cfhKEictp_hPXJuiPqceSJjkRt8mYxb2bwqPA4g91N_0L_i3DcbeFSKyVSaVaQ",
                                 accessToken: accessToken,
                                 tls: {
